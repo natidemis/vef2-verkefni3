@@ -1,0 +1,29 @@
+{
+  "name": "vef2-2021-verkefni2",
+  "version": "1.0.0",
+  "description": "heroku og postgres tengt verkefni",
+  "main": "app.js",
+  "dependencies": {
+    "concurrently": "^5.3.0",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0",
+    "stylelint": "^13.9.0"
+  },
+  "scripts": {
+    "test:eslint": "eslint ./src/*.ejs --fix",
+    "test:stylelint": "stylelint ./public/styles/*.scss --syntax scss",
+    "test": "concurrently npm:test:*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/natidemis/vef2-verkefni2.git"
+  },
+  "author": "Natanel Demissew Ketema",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/natidemis/vef2-verkefni2/issues"
+  },
+  "homepage": "https://github.com/natidemis/vef2-verkefni2#readme"
+}
