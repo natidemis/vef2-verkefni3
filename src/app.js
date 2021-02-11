@@ -9,6 +9,23 @@ const {
 
 const app = express();
 
+app.get('/',(req,res) => {
+  res.send(
+    `<form method="post" action="/post" enctype="application/x-www-form-urlencoded>
+        <input type="text" name ="data">
+        <input type="file" name="file">
+        <button>senda</button>
+    </form>
+  `);
+});
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/post',(req,res) => {
+  console.log('req.body :>>',req.body);
+  res.send(`POST gögn: ${JSON.stringify(req.body)}`);
+});
+
 // TODO setja upp rest af virkni!
 
 // Verðum að setja bara *port* svo virki á heroku
