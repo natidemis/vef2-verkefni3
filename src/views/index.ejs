@@ -1,17 +1,45 @@
 <%- include('header') -%>           
             <div class ="container">
-                <h1>Undirskritftarlisti</h1>
+                <h1 class="title">Undirskriftarlisti</h1>
                 <div class ="nafn">
                     <label for="uname"><b>Nafn*</b></label>
-                    <input type="text" name="uname" required>
+                    <input type="text" name="uname" class="input" required>
                 </div>
                 <div class="kennitala">
                     <label for="kt"><b>Kennitala*</b></label>
-                    <input type="text" placeholder="000000-0000" name="kt" required>
+                    <input type="text" placeholder="000000-0000" name="kt" class="input" required>
+                </div>
+                <div class="textArea">
+                    <label for="Athugasemd"><b>Athugasemd: </b></label>
+                    <textarea class="input" style="height: 80px"></textarea>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="vehicle1" name="anonym" value="true" class="theCheckbox">
+                    <label for="anonym"><b> Ekki birta nafn á lista </b></label><br>
                 </div>
                 <div>
-                    <input type="checkbox" id="vehicle1" name="vehicle1" value="true">
-                    <label for="vehicle1"> Ekki birta nafn á lista</label><br>
+                    <button type="button" class="confirm-btn">Skrifa undir</button>
+                </div>
+            </div>
+            <div class="signatures">
+                <h1 class="title">Undirskriftir</h1>
+                <div class="tableContainer">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="table-header"><b>Dags</b></th>
+                                <th class="table-header"><b>Nafn</b></th>
+                                <th class="table-header"><b>Athugasemd</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td class="table-item">00-00-0000</td>
+                              <td class="table-item">Jónas Jónson</td>
+                              <td class="table-item">ldada d jadjasdjak jda jdklajdkaljd aj </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 <%- include('footer') -%>

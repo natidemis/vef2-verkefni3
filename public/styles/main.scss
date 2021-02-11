@@ -16,7 +16,7 @@ html {
 }
 
 body {
-  background-color: #fff;
+  background-color: #fdffed;
   color: #333;
   font-family: 'Lora', georgia, serif;
   font-size: 16px;
@@ -42,6 +42,78 @@ main {
   width: 100%;
 }
 
-.container{
-  background-color: aqua;
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px dotted #000;
+  padding: $gutter;
+  margin-bottom: $gutter;
+}
+
+.title{
+  font-size: 4em;
+}
+.nafn,.kennitala,.textArea {
+  width: 90%;
+  line-height: $gutter;
+  margin-bottom: $gutter*(2/3) ;
+}
+
+.input {
+  width: 90%;
+  float: right;
+  clear: both;
+  height: 40px;
+  border-radius: 4px;
+  border: 0.5px solid gray;
+}
+
+.Athugasemd {
+  height: 80px;
+}
+
+.confirm-btn {
+  margin-top: 20px;
+  width: 220px;
+  height: 60px;
+  border-radius: 4px;
+  border: 0.5px solid gray;
+  background-color: #fff;
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: $gutter;
+}
+.theCheckbox{
+  width: 20px;
+  height: 20px;
+  bottom: 0px;
+  margin-right: 10px;
+}
+.checkbox {
+  display: flex;
+  justify-content: center;
+}
+
+.signatures {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+}
+.table {
+  width: 100%;
+}
+
+.tableContainer {
+  display: table-header-group;
+  width: 100%;
+}
+
+.tableContainer td, .tableContainer th {
+  border: 1px solid #000;
+  padding: 8px;
 }
