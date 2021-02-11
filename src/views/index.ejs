@@ -1,0 +1,17 @@
+<%- include('header') -%>           
+            <div class ="container">
+                <h1>Undirskritftarlisti</h1>
+                <div class ="nafn">
+                    <label for="uname"><b>Nafn*</b></label>
+                    <input type="text" name="uname" required>
+                </div>
+                <div class="kennitala">
+                    <label for="kt"><b>Kennitala*</b></label>
+                    <input type="text" placeholder="000000-0000" name="kt" required>
+                </div>
+                <div>
+                    <input type="checkbox" id="vehicle1" name="vehicle1" value="true">
+                    <label for="vehicle1"> Ekki birta nafn á lista</label><br>
+                </div>
+            </div>
+<%- include('footer') -%>

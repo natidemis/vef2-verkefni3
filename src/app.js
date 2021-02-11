@@ -1,5 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -9,17 +13,14 @@ const {
 
 const app = express();
 
-app.get('/',(req,res) => {
-  res.send(
-    `<form method="post" action="/post" enctype="application/x-www-form-urlencoded>
-        <input type="text" name ="data">
-        <input type="file" name="file">
-        <button>senda</button>
-    </form>
-  `);
-});
-
 app.use(express.urlencoded({ extended: true }));
+app.set('views',path.join(__dirname,'views'));
+app.set('view engine', 'ejs');
+
+app.get('/',(req,res) => {
+  res.render('index')
+})
+
 
 app.post('/post',(req,res) => {
   console.log('req.body :>>',req.body);
