@@ -1,12 +1,61 @@
+//const express = require('express');
+//const { body, validationResult } = require('express-validator');
 import express from 'express';
-
+import {body, validationResult} from 'express-validator';
+import {fetchAll, insertIntoTable} from './db.js';
 // TODO skráningar virkni
-const app = express();
 
-const router = express.Router();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+export const router = express.Router();
+var querySuccess = false;
+const formValidation = [
+  body('name')
+    .isLength({min: 1})
+    .withMessage('Nafn má ekki vera tómt')
+    .trim()
+    .escape(),
+  body('nationalId')
+    .isLength({min: 1})
+    .withMessage('Kennitala má ekki vera tómt')
+    .blacklist('-'),
+  body('nationalId')
+    .matches(new RegExp('^[0-9]{6}-?[0-9]{4}$'))
+    .withMessage('Kennitala verður að vera á formi 000000-0000 eða 0000000000'),
+];
 
+async function register(req, res) {
+  try{
+    const data = await fetchAll();
+    res.render('index',{querySuccess, data, concat: item => JSON.stringify(item).substring(1,11), errorId: [], errorMessages: []});
+    querySuccess = false;
+  } catch(e) {
+    console.error("Villa kom upp: ",e);
+  }
+}
+
+async function registeration(req, res) {
+  const {
+    name = '',
+    nationalId = '',
+    comment = '',
+  } = req.body
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    const errorMessages = errors.array().map(i => i.msg);
+    const errorId = errors.array().map(x => x.param);
+    return res.render('index',{querySuccess, errorId, errorMessages});
+  }
+  const data = {
+    name: name,
+    nationalId: nationalId,
+    comment: comment,
+    anonymous: req.body.hasOwnProperty('anonymous') ? false : true,
+  }
+  
+  await insertIntoTable(data);
+  
+  querySuccess = true;
+  return res.redirect('/');
+}
 
 /**
  * Higher-order fall sem umlykur async middleware með villumeðhöndlun.
@@ -18,14 +67,7 @@ function catchErrors(fn) {
     return (req, res, next) => fn(req, res, next).catch(next);
   }
 
+router.get('/',register);
+router.post('/post',formValidation,catchErrors(registeration));
 
-export default function register(req,res) {
-    console.log(`gögn: ${JSON.stringify(req.body)}`);
-    res.send(`POST gögn: ${JSON.stringify(req.body)}`);
-    res.render('index');
-}
-
-function renderPage(req,res){
-    res.render('index');
-}
-
+//module.exports = router;

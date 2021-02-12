@@ -23,9 +23,12 @@
                         <textarea class="input" name="comment" style="height: 80px"></textarea>
                     </div>
                     <div class="checkbox">
-                        <input type="checkbox" name="anonymous" value="true" class="theCheckbox" data-bind="false">
+                        <input type="checkbox" name="anonymous" value="false" class="theCheckbox">
                         <label for="anonymous"><b> Ekki birta nafn á lista </b></label><br>
                     </div>
+                    <% if(querySuccess) { %>
+                        <h3 class="error-title"><b>Undirskrift móttekin!</b></h3
+                   <% } %>
                     <% if(!(errorId.length === 0)) { %>
                         <h3 class="error-title"><b>Villur við undirskrift:</b></h3>
                         <div class ="error-list">
@@ -53,11 +56,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                              <td class="table-item">00-00-0000</td>
-                              <td class="table-item">Jónas Jónson</td>
-                              <td class="table-item">ldada d jadjasdjak jda jdklajdkaljd aj </td>
-                            </tr>
+                            <% data.forEach(function(item) { %>
+                                <tr>
+                                    <td class="table-item"><b><%= concat(item.signed) %></b></td>
+                                    <td class="table-item"><b><%= item.name %></b></td>
+                                    <td class="table-item"><b><%= item.comment %></b></td>
+                                </tr>
+                          <%  }) %>
                         </tbody>
                     </table>
                 </div>

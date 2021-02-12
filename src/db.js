@@ -5,6 +5,7 @@ dotenv.config();
 
 const {
   DATABASE_URL: connectionString,
+  NODE_ENV: nodeEnv = 'development',
 } = process.env;
 
 if (!connectionString) {
@@ -26,3 +27,31 @@ pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
   process.exit(-1);
 });
+
+async function query(q, values = []) {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(q, values);
+
+    return result;
+  } catch (err) {
+    console.error("villa: ",err);
+  } 
+  
+}
+
+
+export async function fetchAll() {
+  const res = await query('SELECT * FROM signatures ORDER BY signed');
+  return res.rows;
+}
+
+export async function insertIntoTable(data) {
+  const q = `INSERT INTO signatures 
+  (name,nationalId, comment, anonymous)
+  VALUES
+  ($1, $2, $3, $4)`;
+  const values = [data.name, data.nationalId,data.comment,data.anonymous];
+  return await query(q,values);
+}
