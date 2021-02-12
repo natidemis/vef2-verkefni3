@@ -6,7 +6,7 @@ import {fetchAll, insertIntoTable} from './db.js';
 // TODO skráningar virkni
 
 export const router = express.Router();
-var querySuccess = false;
+var querySuccess = [false,""];
 const formValidation = [
   body('name')
     .isLength({min: 1})
@@ -26,7 +26,7 @@ async function register(req, res) {
   try{
     const data = await fetchAll();
     res.render('index',{querySuccess, data, concat: item => JSON.stringify(item).substring(1,11), errorId: [], errorMessages: []});
-    querySuccess = false;
+    querySuccess = [false,""];
   } catch(e) {
     console.error("Villa kom upp: ",e);
   }
@@ -42,7 +42,7 @@ async function registeration(req, res) {
   if(!errors.isEmpty()) {
     const errorMessages = errors.array().map(i => i.msg);
     const errorId = errors.array().map(x => x.param);
-    return res.render('index',{querySuccess, errorId, errorMessages});
+    return res.render('index',{querySuccess: [false, ""], data: await fetchAll(), concat: item => JSON.stringify(item).substring(1,11), errorId, errorMessages});
   }
   const data = {
     name: name,
@@ -51,9 +51,8 @@ async function registeration(req, res) {
     anonymous: req.body.hasOwnProperty('anonymous') ? false : true,
   }
   
-  await insertIntoTable(data);
-  
-  querySuccess = true;
+  const q = await insertIntoTable(data);
+  querySuccess = q.rowCount === 0 ? [true,"duplicate"] : [true,"added"];
   return res.redirect('/');
 }
 

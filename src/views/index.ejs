@@ -26,9 +26,12 @@
                         <input type="checkbox" name="anonymous" value="false" class="theCheckbox">
                         <label for="anonymous"><b> Ekki birta nafn á lista </b></label><br>
                     </div>
-                    <% if(querySuccess) { %>
+                    <% if(querySuccess[0] && querySuccess[1] === "added") { %>
                         <h3 class="error-title"><b>Undirskrift móttekin!</b></h3
                    <% } %>
+                   <% if(querySuccess[0] && querySuccess[1] === "duplicate") { %>
+                    <h3 class="error-title"><b>Kennitala er notuð</b></h3
+               <% } %>
                     <% if(!(errorId.length === 0)) { %>
                         <h3 class="error-title"><b>Villur við undirskrift:</b></h3>
                         <div class ="error-list">
@@ -57,11 +60,19 @@
                         </thead>
                         <tbody>
                             <% data.forEach(function(item) { %>
-                                <tr>
-                                    <td class="table-item"><b><%= concat(item.signed) %></b></td>
-                                    <td class="table-item"><b><%= item.name %></b></td>
-                                    <td class="table-item"><b><%= item.comment %></b></td>
-                                </tr>
+                              <%  if(item.anonymous) { %>
+                                    <tr>
+                                        <td class="table-item"><b><%= concat(item.signed) %></b></td>
+                                        <td class="table-item"><b><%= item.name %></b></td>
+                                        <td class="table-item"><b><%= item.comment %></b></td>
+                                    </tr>
+                                <% } else { %>
+                                    <tr>
+                                        <td class="table-item"><b><%= concat(item.signed) %></b></td>
+                                        <td class="table-item"><b>Nafnlaus</b></td>
+                                        <td class="table-item"><b><%= item.comment %></b></td>
+                                    </tr>
+                              <%  } %> 
                           <%  }) %>
                         </tbody>
                     </table>

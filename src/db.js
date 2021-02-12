@@ -51,7 +51,7 @@ export async function insertIntoTable(data) {
   const q = `INSERT INTO signatures 
   (name,nationalId, comment, anonymous)
   VALUES
-  ($1, $2, $3, $4)`;
+  ($1, $2, $3, $4) ON CONFLICT (nationalId) DO NOTHING`;
   const values = [data.name, data.nationalId,data.comment,data.anonymous];
   return await query(q,values);
 }
