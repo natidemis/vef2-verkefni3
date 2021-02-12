@@ -1,25 +1,45 @@
 <%- include('header') -%>           
             <div class ="container">
                 <h1 class="title">Undirskriftarlisti</h1>
-                <div class ="nafn">
-                    <label for="uname"><b>Nafn*</b></label>
-                    <input type="text" name="uname" class="input" required>
-                </div>
-                <div class="kennitala">
-                    <label for="kt"><b>Kennitala*</b></label>
-                    <input type="text" placeholder="000000-0000" name="kt" class="input" required>
-                </div>
-                <div class="textArea">
-                    <label for="Athugasemd"><b>Athugasemd: </b></label>
-                    <textarea class="input" style="height: 80px"></textarea>
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox" id="vehicle1" name="anonym" value="true" class="theCheckbox">
-                    <label for="anonym"><b> Ekki birta nafn á lista </b></label><br>
-                </div>
-                <div>
-                    <button type="button" class="confirm-btn">Skrifa undir</button>
-                </div>
+                <form method="post" action="/post">
+                    <div class ="nafn">
+                        <label for="name"><b>Nafn*</b></label>
+                        <% if(errorId.includes('name')) { %>
+                            <input type="text" name="name" class="input error">
+                      <%  }else{ %>
+                            <input type="text" name="name" class="input">
+                       <% } %>
+                    </div>
+                    <div class="kennitala">
+                        <label for="nationalId"><b>Kennitala*</b></label>
+                        <% if(errorId.includes('nationalId')) { %>
+                            <input type="text" placeholder="000000-0000" name="nationalId" class="input error">
+                      <%  }else{ %>
+                            <input type="text" placeholder="000000-0000" name="nationalId" class="input">
+                       <% } %>
+                    </div>
+                    <div class="textArea">
+                        <label for="comment"><b>Athugasemd: </b></label>
+                        <textarea class="input" name="comment" style="height: 80px"></textarea>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox" name="anonymous" value="true" class="theCheckbox" data-bind="false">
+                        <label for="anonymous"><b> Ekki birta nafn á lista </b></label><br>
+                    </div>
+                    <% if(!(errorId.length === 0)) { %>
+                        <h3 class="error-title"><b>Villur við undirskrift:</b></h3>
+                        <div class ="error-list">
+                            <% errorMessages.forEach(function(item) { %>
+                                <ul>
+                                    <li><b><%= item %></b></li>
+                                </ul>
+                            <% }) %>
+                        </div>
+                  <%  } %>
+                    <div>
+                        <button class="confirm-btn">Skrifa undir</button> 
+                    </div>
+                </form>
             </div>
             <div class="signatures">
                 <h1 class="title">Undirskriftir</h1>
