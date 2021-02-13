@@ -1,6 +1,7 @@
 import pg from 'pg';
 import dotenv from 'dotenv';
-
+import fs from 'fs';
+import {__dirname} from './app.js';
 dotenv.config();
 
 const {
@@ -32,6 +33,7 @@ async function query(q, values = []) {
   const client = await pool.connect();
 
   try {
+    await client.query(fs.readFileSync(__dirname+'\\..\\sql\\schema.sql','utf-8'));
     const result = await client.query(q, values);
 
     return result;
