@@ -57,17 +57,31 @@ main {
   margin-bottom: $gutter;
 }
 
-.title{
+.title {
   font-size: 3em;
   margin-bottom: $gutter;
+
   @media (min-width: $max-width / 2) {
     font-size: 4em;
   }
 }
-.nafn,.kennitala,.textArea {
+
+.nafn {
   width: 90%;
   line-height: $gutter;
-  margin-bottom: $gutter*(2/3) ;
+  margin-bottom: $gutter*(2/3);
+}
+
+.kennitala {
+  width: 90%;
+  line-height: $gutter;
+  margin-bottom: $gutter*(2/3);
+}
+
+.textArea {
+  width: 90%;
+  line-height: $gutter;
+  margin-bottom: $gutter*(2/3);
 }
 
 .input {
@@ -77,7 +91,7 @@ main {
   height: 40px;
   border-radius: 4px;
   border: 0.5px solid #a9a9a9;
-  box-shadow: 0 0 2pt 0.2pt #D3D3D3;
+  box-shadow: 0 0 2pt 0.2pt #d3d3d3;
 }
 
 .Athugasemd {
@@ -90,23 +104,26 @@ main {
   height: 30px;
   border-radius: 4px;
   border: 0.5px solid #a9a9a9;
-  box-shadow: 0 0 2pt 0.2pt #D3D3D3;
+  box-shadow: 0 0 2pt 0.2pt #d3d3d3;
   background-color: #fff;
   font-size: 1em;
   text-align: center;
   margin-bottom: $gutter;
+
   @media (min-width: $max-width / 2) {
     width: 220px;
     height: 60px;
     font-size: 2em;
   }
 }
-.theCheckbox{
-  width: 20px;
+
+.theCheckbox {
+  width: 1.25em;
   height: 20px;
-  bottom: 0px;
+  bottom: 0;
   margin-right: 10px;
 }
+
 .checkbox {
   display: flex;
   justify-content: center;
@@ -119,25 +136,35 @@ main {
   align-items: center;
   justify-content: center;
 }
+
 .table {
   width: 100%;
   border-collapse: collapse;
 }
 
-tr td:nth-child(1), tr td:nth-child(2) {
+.tableContainer td {
+  border: 1px solid #000;
+  padding: 8px;
+}
+
+.tableContainer th {
+  border: 1px solid #000;
+  padding: 8px;
+}
+
+tr td:nth-child(1) {
   width: 1%;
   white-space: nowrap;
 }
 
+tr td:nth-child(2) {
+  width: 1%;
+  white-space: nowrap;
+}
 
 .tableContainer {
   display: table-header-group;
   width: 100%;
-}
-
-.tableContainer td, .tableContainer th {
-  border: 1px solid #000;
-  padding: 8px;
 }
 
 form {

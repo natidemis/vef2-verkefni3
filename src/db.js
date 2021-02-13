@@ -3,8 +3,9 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 dotenv.config();
 
 const {
@@ -16,8 +17,6 @@ if (!connectionString) {
   console.error('Vantar DATABASE_URL');
   process.exit(1);
 }
-
-console.log('process.env :>> ', process.env.DATABASE_URL);
 
 if (!connectionString) {
   console.error('Vantar DATABASE_URL!');
@@ -32,24 +31,17 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 
-const cl = await pool.connect();
-
-await cl.query(fs.readFileSync(path.resolve(__dirname, '..')+'/sql/schema.sql','utf-8'));
-cl.release();
+async function createTable() {
+  const cl = await pool.connect();
+  await cl.query(fs.readFileSync(`${path.resolve(dirname, '..')}/sql/schema.sql`, 'utf-8'));
+  cl.release();
+}
+createTable();
 async function query(q, values = []) {
   const client = await pool.connect();
-
-  try {
-
-    const result = await client.query(q, values);
-
-    return result;
-  } catch (err) {
-    console.error("villa: ",err);
-  } 
-  
+  const result = await client.query(q, values);
+  return result;
 }
-
 
 export async function fetchAll() {
   const res = await query('SELECT * FROM signatures ORDER BY signed');
@@ -61,6 +53,6 @@ export async function insertIntoTable(data) {
   (name,nationalId, comment, anonymous)
   VALUES
   ($1, $2, $3, $4) ON CONFLICT (nationalId) DO NOTHING`;
-  const values = [data.name, data.nationalId,data.comment,data.anonymous];
-  return await query(q,values);
+  const values = [data.name, data.nationalId, data.comment, data.anonymous];
+  return query(q, values);
 }

@@ -1,20 +1,21 @@
-//const express = require('express');
-//const { body, validationResult } = require('express-validator');
+// const express = require('express');
+// const { body, validationResult } = require('express-validator');
 import express from 'express';
-import {body, validationResult} from 'express-validator';
-import {fetchAll, insertIntoTable} from './db.js';
+import { body, validationResult } from 'express-validator';
+import xss from 'xss';
+import { fetchAll, insertIntoTable } from './db.js';
 // TODO skráningar virkni
 
 export const router = express.Router();
-var querySuccess = [false,""];
+let querySuccess = [false, ''];
 const formValidation = [
   body('name')
-    .isLength({min: 1})
+    .isLength({ min: 1 })
     .withMessage('Nafn má ekki vera tómt')
     .trim()
     .escape(),
   body('nationalId')
-    .isLength({min: 1})
+    .isLength({ min: 1 })
     .withMessage('Kennitala má ekki vera tómt')
     .blacklist('-'),
   body('nationalId')
@@ -23,12 +24,18 @@ const formValidation = [
 ];
 
 async function register(req, res) {
-  try{
+  try {
     const data = await fetchAll();
-    res.render('index',{querySuccess, data, concat: item => JSON.stringify(item).substring(1,11), errorId: [], errorMessages: []});
-    querySuccess = [false,""];
-  } catch(e) {
-    console.error("Villa kom upp: ",e);
+    res.render('index', {
+      querySuccess,
+      data,
+      concat: (item) => JSON.stringify(item).substring(1, 11),
+      errorId: [],
+      errorMessages: [],
+    });
+    querySuccess = [false, ''];
+  } catch (e) {
+    console.error('Villa kom upp: ', e);
   }
 }
 
@@ -37,22 +44,28 @@ async function registeration(req, res) {
     name = '',
     nationalId = '',
     comment = '',
-  } = req.body
+    anonymous = '',
+  } = req.body;
   const errors = validationResult(req);
-  if(!errors.isEmpty()) {
-    const errorMessages = errors.array().map(i => i.msg);
-    const errorId = errors.array().map(x => x.param);
-    return res.render('index',{querySuccess: [false, ""], data: await fetchAll(), concat: item => JSON.stringify(item).substring(1,11), errorId, errorMessages});
+  if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map((i) => i.msg);
+    const errorId = errors.array().map((x) => x.param);
+    return res.render('index', {
+      querySuccess: [false, ''], data: await fetchAll(), concat: (item) => JSON.stringify(item).substring(1, 11), errorId, errorMessages,
+    });
   }
   const data = {
-    name: name,
-    nationalId: nationalId,
-    comment: comment,
-    anonymous: req.body.hasOwnProperty('anonymous') ? false : true,
+    name: xss(name),
+    nationalId: xss(nationalId),
+    comment: xss(comment),
+    anonymous: anonymous === 'on',
+  };
+  try {
+    const q = await insertIntoTable(data);
+    querySuccess = q.rowCount === 0 ? [true, 'duplicate'] : [true, 'added'];
+  } catch (e) {
+    console.error(e);
   }
-  
-  const q = await insertIntoTable(data);
-  querySuccess = q.rowCount === 0 ? [true,"duplicate"] : [true,"added"];
   return res.redirect('/');
 }
 
@@ -63,10 +76,10 @@ async function registeration(req, res) {
  * @returns {function} Middleware með villumeðhöndlun
  */
 function catchErrors(fn) {
-    return (req, res, next) => fn(req, res, next).catch(next);
-  }
+  return (req, res, next) => fn(req, res, next).catch(next);
+}
 
-router.get('/',register);
-router.post('/post',formValidation,catchErrors(registeration));
+router.get('/', register);
+router.post('/post', formValidation, catchErrors(registeration));
 
-//module.exports = router;
+// module.exports = router;

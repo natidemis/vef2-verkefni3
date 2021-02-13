@@ -13,7 +13,8 @@
     "fs": "0.0.1-security",
     "node-sass": "^5.0.0",
     "path": "^0.12.7",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "xss": "^1.0.8"
   },
   "devDependencies": {
     "eslint": "^7.19.0",
@@ -25,9 +26,9 @@
     "stylelint-config-standard": "^20.0.0"
   },
   "scripts": {
-    "lint:eslint": "eslint ./src",
-    "lint:stylelint": "stylelint ./public/styles/*.scss --syntax scss",
-    "test": "concurrently npm:lint:*",
+    "test:eslint": "eslint ./src --fix",
+    "test:stylelint": "stylelint ./public/styles/*.scss --syntax scss",
+    "test": "concurrently npm:test:*",
     "sass:build": "node-sass --source-map-embed ./public/styles/main.scss ./public/main.css",
     "sass:watch": "node-sass --source-map-embed --watch ./public/styles/main.scss ./public/main.css",
     "nodemon": "nodemon ./src/app.js",
