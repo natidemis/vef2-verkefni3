@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const {
-  PORT: port = 3000,
+  PORT: port = 3000 || process.env.PORT,
 } = process.env;
 
 const app = express();
