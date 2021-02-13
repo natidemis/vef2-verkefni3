@@ -34,7 +34,7 @@ pool.on('error', (err) => {
 
 const cl = await pool.connect();
 
-await cl.query(fs.readFileSync(path.resolve(__dirname, '..')+'\\sql\\schema.sql','utf-8'));
+await cl.query(fs.readFileSync(path.resolve(__dirname, '..')+'/sql/schema.sql','utf-8'));
 cl.release();
 async function query(q, values = []) {
   const client = await pool.connect();
