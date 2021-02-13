@@ -33,13 +33,13 @@ pool.on('error', (err) => {
 });
 
 const cl = await pool.connect();
-await cl.query(fs.readFileSync(__dirname+'\\..\\sql\\schema.sql','utf-8'));
+await cl.query(fs.readFileSync(path.dirname(path.basename(__dirname)) + '/sql/schema.sql'));
 cl.release();
 async function query(q, values = []) {
   const client = await pool.connect();
 
   try {
-    await client.query(fs.readFileSync(__dirname+'\\..\\sql\\schema.sql','utf-8'));
+
     const result = await client.query(q, values);
 
     return result;
