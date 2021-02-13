@@ -53,24 +53,24 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="table-header"><b>Dags</b></th>
-                                <th class="table-header"><b>Nafn</b></th>
-                                <th class="table-header"><b>Athugasemd</b></th>
+                                <th class="table__header"><b>Dags</b></th>
+                                <th class="table__header"><b>Nafn</b></th>
+                                <th class="table__header"><b>Athugasemd</b></th>
                             </tr>
                         </thead>
                         <tbody>
                             <% data.forEach(function(item) { %>
                               <%  if(item.anonymous) { %>
                                     <tr>
-                                        <td class="table-item"><b><%= concat(item.signed) %></b></td>
+                                        <td class="table-items"><b><%= concat(item.signed) %></b></td>
                                         <td class="table-item"><b><%= item.name %></b></td>
                                         <td class="table-item"><b><%= item.comment %></b></td>
                                     </tr>
                                 <% } else { %>
                                     <tr>
-                                        <td class="table-item"><b><%= concat(item.signed) %></b></td>
-                                        <td class="table-item"><b>Nafnlaus</b></td>
-                                        <td class="table-item"><b><%= item.comment %></b></td>
+                                        <td class="table__item table_item-fit"><b><%= concat(item.signed) %></b></td>
+                                        <td class="table__item table_item-fit"><b>Nafnlaus</b></td>
+                                        <td class="table__item table_comment"><b><%= item.comment %></b></td>
                                     </tr>
                               <%  } %> 
                           <%  }) %>

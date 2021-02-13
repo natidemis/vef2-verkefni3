@@ -1,11 +1,6 @@
-//const express = require('express')
-//const dotenv = require('dotenv');
-//const { body, validationResult } = require('express-validator');
-//const register = require('./registration.js')
-//const path = require('path');
 import express from 'express';
 import dotenv from 'dotenv';
-import {router} from './registration.js'
+import { router } from './registration.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);

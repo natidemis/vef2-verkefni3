@@ -17,16 +17,23 @@
   },
   "devDependencies": {
     "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "nodemon": "^2.0.7",
-    "stylelint": "^13.9.0"
+    "stylelint": "^13.9.0",
+    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-config-standard": "^20.0.0"
   },
   "scripts": {
-    "test:eslint": "eslint ./src/*.js --fix",
-    "test:stylelint": "stylelint ./public/styles/*.scss --syntax scss",
-    "test": "concurrently npm:test:*",
-    "start": "node ./src/app.js",
-    "dev": "nodemon ./src/app.js",
-    "build:sass": "node-sass --source-map-embed ./public/styles/main.scss ./public/main.css"
+    "lint:eslint": "eslint ./src",
+    "lint:stylelint": "stylelint ./public/styles/*.scss --syntax scss",
+    "test": "concurrently npm:lint:*",
+    "sass:build": "node-sass --source-map-embed ./public/styles/main.scss ./public/main.css",
+    "sass:watch": "node-sass --source-map-embed --watch ./public/styles/main.scss ./public/main.css",
+    "nodemon": "nodemon ./src/app.js",
+    "dev": "concurrently npm:nodemon npm:sass:*",
+    "run-server": "node ./src/app.js",
+    "start": "concurrently npm:sass:build npm:run-server"
   },
   "repository": {
     "type": "git",
