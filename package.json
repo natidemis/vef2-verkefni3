@@ -10,6 +10,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
+    "faker": "^5.4.0",
     "fs": "0.0.1-security",
     "node-sass": "^5.0.0",
     "path": "^0.12.7",
@@ -34,7 +35,8 @@
     "nodemon": "nodemon ./src/app.js",
     "dev": "concurrently npm:nodemon npm:sass:*",
     "run-server": "node ./src/app.js",
-    "start": "concurrently npm:sass:build npm:run-server"
+    "start": "concurrently npm:sass:build npm:run-server",
+    "setup": "node ./src/setup.js"
   },
   "repository": {
     "type": "git",

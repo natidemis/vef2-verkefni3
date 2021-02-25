@@ -37,10 +37,15 @@ async function createTable() {
   cl.release();
 }
 createTable();
-async function query(q, values = []) {
+export async function query(q, values = []) {
   const client = await pool.connect();
-  const result = await client.query(q, values);
-  return result;
+  try {
+    const result = await client.query(q, values);
+    return result;
+  } finally {
+    client.release();
+  }
+
 }
 
 export async function fetchAll() {
@@ -50,9 +55,13 @@ export async function fetchAll() {
 
 export async function insertIntoTable(data) {
   const q = `INSERT INTO signatures 
-  (name,nationalId, comment, anonymous)
+  (name,nationalId, comment, anonymous,signed)
   VALUES
-  ($1, $2, $3, $4) ON CONFLICT (nationalId) DO NOTHING`;
-  const values = [data.name, data.nationalId, data.comment, data.anonymous];
+  ($1, $2, $3, $4, $5) ON CONFLICT (nationalId) DO NOTHING`;
+  const values = [data.name, data.nationalId, data.comment, data.anonymous, data.date];
   return query(q, values);
+}
+
+export async function end() {
+  await pool.end();
 }
