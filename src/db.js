@@ -44,7 +44,7 @@ async function query(q, values = []) {
 }
 
 export async function fetchAll() {
-  const res = await query('SELECT * FROM signatures ORDER BY signed');
+  const res = await query('SELECT * FROM signatures ORDER BY signed DESC');
   return res.rows;
 }
 

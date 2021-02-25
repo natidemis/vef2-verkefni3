@@ -58,7 +58,7 @@ async function registeration(req, res) {
     name: xss(name),
     nationalId: xss(nationalId),
     comment: xss(comment),
-    anonymous: anonymous === 'on',
+    anonymous: anonymous !== 'on',
   };
   try {
     const q = await insertIntoTable(data);
