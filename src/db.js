@@ -62,6 +62,23 @@ export async function insertIntoTable(data) {
   return query(q, values);
 }
 
+export async function select(offset = 0, limit = 10) {
+  const client = await pool.connect();
+
+  try {
+    const q = 'SELECT * FROM signatures ORDER BY signed DESC OFFSET $1 LIMIT $2';
+    const res = await client.query(q, [offset, limit]);
+
+    return res.rows;
+  } catch (e) {
+    console.error('Error selecting', e);
+  } finally {
+    client.release();
+  }
+
+  return [];
+}
+
 export async function end() {
   await pool.end();
 }

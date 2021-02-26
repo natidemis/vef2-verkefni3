@@ -3,13 +3,14 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { router } from './registration.js';
+import {router_admin } from './admin.js';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 dotenv.config();
 
-const {
+export const {
   PORT: port = 3000 || process.env.PORT,
 } = process.env;
 
@@ -23,7 +24,9 @@ app.set('view engine', 'ejs');
 
 // TODO setja upp rest af virkni!
 
-app.use('/', router);
+app.use('/', router,router_admin);
+
+
 
 // Verðum að setja bara *port* svo virki á heroku
 app.listen(port, () => {

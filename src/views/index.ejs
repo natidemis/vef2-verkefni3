@@ -1,5 +1,5 @@
 <%- include('header') -%>           
-            <div class ="container">
+            <div class="container">
                 <h1 class="title">Undirskriftarlisti</h1>
                 <form method="post" action="/post">
                     <div class ="nafn">
@@ -23,7 +23,7 @@
                         <textarea class="input" name="comment" style="height: 80px"></textarea>
                     </div>
                     <div class="checkbox">
-                        <input type="checkbox" name="anonymous" value="false" class="theCheckbox">
+                        <input type="checkbox" name="anonymous" value="on" class="theCheckbox">
                         <label for="anonymous"><b> Ekki birta nafn á lista </b></label><br>
                     </div>
                     <% if(querySuccess[0] && querySuccess[1] === "added") { %>
@@ -49,6 +49,7 @@
             </div>
             <div class="signatures">
                 <h1 class="title">Undirskriftir</h1>
+                <h4>Fjöldi undirskrifta: <%= num_of_signatures %></h4>
                 <div class="tableContainer">
                     <table class="table">
                         <thead>
@@ -76,6 +77,19 @@
                           <%  }) %>
                         </tbody>
                     </table>
+                </div>
+                <div class="signatures__page">
+                    <div class="links">
+                        <% if(links.prev) { %>
+                            <a href="<%= links.prev.href %>">Fyrri síða</a>
+                      <%  } %>
+                    </div>
+                    <div class="links">
+                        <h5>Síða <%=page_num[0] %> af <%= page_num[1] %></h5>
+                    </div>
+                    <div class="links">
+                        <a href="<%= links.next.href %>">Næsta síða</a>
+                    </div>
                 </div>
             </div>
 <%- include('footer') -%>

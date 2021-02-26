@@ -66,13 +66,13 @@ main {
   }
 }
 
-.nafn {
+.nafn, .notendanafn {
   width: 90%;
   line-height: $gutter;
   margin-bottom: $gutter*(2/3);
 }
 
-.kennitala {
+.kennitala, .password {
   width: 90%;
   line-height: $gutter;
   margin-bottom: $gutter*(2/3);
@@ -115,6 +115,20 @@ main {
     height: 60px;
     font-size: 2em;
   }
+  
+}
+
+.login-btn {
+  margin-top: 20px;
+  width: 200px;
+  height: 35px;
+  border-radius: 4px;
+  border: 0.5px solid #a9a9a9;
+  box-shadow: 0 0 2pt 0.2pt #d3d3d3;
+  background-color: #fff;
+  font-size: 1em;
+  text-align: center;
+  margin-bottom: $gutter;
 }
 
 .theCheckbox {
@@ -151,6 +165,17 @@ main {
   border: 1px solid #000;
   padding: 8px;
 }
+
+.signatures__page, .login__back {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+
+
 
 tr td:nth-child(1) {
   width: 1%;

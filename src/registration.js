@@ -1,9 +1,8 @@
-// const express = require('express');
-// const { body, validationResult } = require('express-validator');
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import xss from 'xss';
-import { fetchAll, insertIntoTable } from './db.js';
+import { fetchAll, insertIntoTable, query, select } from './db.js';
+import { port } from './app.js';
 // TODO skráningar virkni
 
 export const router = express.Router();
@@ -23,29 +22,65 @@ const formValidation = [
     .withMessage('Kennitala verður að vera á formi 000000-0000 eða 0000000000'),
 ];
 
-async function register(req, res) {
+
+async function signatures_main(req, res) {
+
   try {
-    const data = await fetchAll();
+    const num_of_signatures = await query("SELECT COUNT(*) FROM signatures");
+    let { offset = 0, limit = 50 } = req.query;
+    offset = Number(offset);
+    limit = Number(limit);
+
+    const rows = await select(offset, limit);
+
+    const result = {
+      _links: {
+        self: {
+          href: `http://localhost:${port}/?offset=${offset}&limit=${limit}`,
+        },
+      },
+      items: rows,
+    };
+
+    if (offset > 0) {
+      result._links.prev = {
+        href: `http://localhost:${port}/?offset=${offset - limit}&limit=${limit}`,
+      };
+    }
+
+    if (rows.length <= limit) {
+      result._links.next = {
+        href: `http://localhost:${port}/?offset=${Number(offset) + limit}&limit=${limit}`,
+      };
+    }
+    console.log(result._links.self.href)
     res.render('index', {
+      title: "Undirskriftarlisti",
       querySuccess,
-      data,
+      data: result.items,
       concat: (item) => JSON.stringify(item).substring(1, 11),
       errorId: [],
       errorMessages: [],
+      num_of_signatures: num_of_signatures.rows[0].count,
+      page_num: [offset/limit + 1,Math.ceil(num_of_signatures.rows[0].count/limit)],
+      links: result._links,
     });
     querySuccess = [false, ''];
   } catch (e) {
-    console.error('Villa kom upp: ', e);
+    console.error('Villa að sækja gögn til að birta: ', e);
   }
 }
 
 async function registeration(req, res) {
+  
+
   const {
     name = '',
     nationalId = '',
     comment = '',
     anonymous = '',
   } = req.body;
+  
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const errorMessages = errors.array().map((i) => i.msg);
@@ -58,7 +93,7 @@ async function registeration(req, res) {
     name: xss(name),
     nationalId: xss(nationalId),
     comment: xss(comment),
-    anonymous: anonymous !== 'on',
+    anonymous: !(anonymous === 'on'), //ekki birta ef "on"
     date: new Date(),
   };
   try {
@@ -76,11 +111,13 @@ async function registeration(req, res) {
  * @param {function} fn Middleware sem grípa á villur fyrir
  * @returns {function} Middleware með villumeðhöndlun
  */
-function catchErrors(fn) {
+export function catchErrors(fn) {
   return (req, res, next) => fn(req, res, next).catch(next);
 }
 
-router.get('/', register);
+router.get('/', catchErrors(signatures_main));
 router.post('/post', formValidation, catchErrors(registeration));
 
-// module.exports = router;
+
+
+
