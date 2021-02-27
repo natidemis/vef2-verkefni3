@@ -44,7 +44,7 @@ export async function renderPage(req, res, admin) {
       errorId: [],
       errorMessages: [],
       numOfSignatures: numOfSignatures.rows[0].count,
-      page_num: [offset / limit + 1, Math.ceil(numOfSignatures.rows[0].count / limit)],
+      page_num: [offset / limit + 1, Math.floor(numOfSignatures.rows[0].count / limit) + 1],
       links: result.links,
       admin,
     };

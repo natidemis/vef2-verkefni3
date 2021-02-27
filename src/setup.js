@@ -4,12 +4,15 @@ import { query, end, insertIntoTable } from './db.js';
 
 const schemaFile = './sql/schema.sql';
 
-async function createFakeUsers() {
+async function create() {
+  const data = await readFile(schemaFile);
+  await query(data.toString('utf-8'));
+
   let i;
   const twoWeeks = 1000 * 60 * 60 * 24 * 14;
   const arr = [];
   for (i = 0; i < 500; i += 1) {
-    const data = {
+    const gogn = {
       name: faker.name.findName(),
       nationalId: Math.floor(100000000 + Math.random() * 900000000),
       comment: faker.lorem.sentence(),
@@ -19,20 +22,11 @@ async function createFakeUsers() {
         new Date().toISOString().substring(0, 10),
       ),
     };
-    arr.push(data);
+    arr.push(gogn);
   }
-  const promises = arr.map(insertIntoTable);
-  await Promise.all(promises);
-}
 
-async function create() {
-  const data = await readFile(schemaFile);
-
-  await query(data.toString('utf-8'));
-
-  createFakeUsers().catch((err) => {
-    console.error('Error inserting random signatures', err);
-  });
+  const primises = arr.map(insertIntoTable);
+  await Promise.all(primises);
 
   await end();
 
