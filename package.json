@@ -38,9 +38,11 @@
     "sass:watch": "node-sass --source-map-embed --watch ./public/styles/main.scss ./public/main.css",
     "nodemon": "nodemon ./src/app.js",
     "dev": "concurrently npm:nodemon npm:sass:*",
-    "run-server": "node ./src/app.js",
+    "init:run-server": "node ./src/app.js",
     "start": "concurrently npm:sass:build npm:run-server",
-    "setup": "node ./src/setup.js"
+    "setup": "node ./src/setup.js",
+    "init:setup": "node ./src/setup.js",
+    "init": "concurrently npm:init:*"
   },
   "repository": {
     "type": "git",
