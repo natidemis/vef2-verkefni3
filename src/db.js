@@ -13,10 +13,7 @@ if (!connectionString) {
   process.exit(1);
 }
 
-if (!connectionString) {
-  console.error('Vantar DATABASE_URL!');
-  process.exit(1);
-}
+
 const ssl = nodeEnv !== 'development' ? { rejectUnauthorized: false } : false;
 
 const pool = new pg.Pool({ connectionString, ssl });
