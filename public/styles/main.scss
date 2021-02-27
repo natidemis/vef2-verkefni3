@@ -23,8 +23,7 @@ body {
 }
 
 h1,
-h2,
-h3 {
+h2 {
   font-family: Roboto, helvetica, arial, sans-serif;
   font-weight: bold;
 }
@@ -55,6 +54,20 @@ main {
   border-bottom: 1px dotted #000;
   padding: $gutter;
   margin-bottom: $gutter;
+
+  &__admin {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    padding: $gutter;
+    margin-bottom: $gutter;
+  }
+}
+
+.admin__info h3 {
+  margin-bottom: $gutter/2;
 }
 
 .title {
@@ -66,13 +79,25 @@ main {
   }
 }
 
-.nafn, .notendanafn {
+.nafn {
   width: 90%;
   line-height: $gutter;
   margin-bottom: $gutter*(2/3);
 }
 
-.kennitala, .password {
+.notendanafn {
+  width: 90%;
+  line-height: $gutter;
+  margin-bottom: $gutter*(2/3);
+}
+
+.kennitala {
+  width: 90%;
+  line-height: $gutter;
+  margin-bottom: $gutter*(2/3);
+}
+
+.password {
   width: 90%;
   line-height: $gutter;
   margin-bottom: $gutter*(2/3);
@@ -92,6 +117,8 @@ main {
   border-radius: 4px;
   border: 0.5px solid #a9a9a9;
   box-shadow: 0 0 2pt 0.2pt #d3d3d3;
+  padding-left: 5px;
+  font-size: 20px;
 }
 
 .Athugasemd {
@@ -115,7 +142,18 @@ main {
     height: 60px;
     font-size: 2em;
   }
-  
+}
+
+.delete-btn {
+  margin: 0;
+  width: 80px;
+  height: $gutter;
+  border-radius: 4px;
+  border: 0.5px solid #a9a9a9;
+  box-shadow: 0 0 2pt 0.2pt #d3d3d3;
+  background-color: #fff;
+  font-size: 1em;
+  text-align: center;
 }
 
 .login-btn {
@@ -166,16 +204,26 @@ main {
   padding: 8px;
 }
 
-.signatures__page, .login__back {
+.signatures__page {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
+.login__back {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
-
-
+.admin__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
 
 tr td:nth-child(1) {
   width: 1%;
@@ -185,6 +233,10 @@ tr td:nth-child(1) {
 tr td:nth-child(2) {
   width: 1%;
   white-space: nowrap;
+}
+
+button {
+  cursor: pointer;
 }
 
 .tableContainer {
@@ -203,6 +255,10 @@ form {
 
 .error {
   background-color: rgb(240, 125, 125);
+}
+
+.login-error {
+  background-color: #f4fdb1;
 }
 
 .error-title {

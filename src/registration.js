@@ -1,8 +1,11 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import xss from 'xss';
-import { fetchAll, insertIntoTable, query, select } from './db.js';
-import { port } from './app.js';
+import {
+  fetchAll, insertIntoTable, query, select,
+} from './db.js';
+import { pagingLinks } from './app.js';
+
 // TODO skráningar virkni
 
 export const router = express.Router();
@@ -22,65 +25,48 @@ const formValidation = [
     .withMessage('Kennitala verður að vera á formi 000000-0000 eða 0000000000'),
 ];
 
-
-async function signatures_main(req, res) {
-
+export async function renderPage(req, res, admin) {
   try {
-    const num_of_signatures = await query("SELECT COUNT(*) FROM signatures");
+    const numOfSignatures = await query('SELECT COUNT(*) FROM signatures');
     let { offset = 0, limit = 50 } = req.query;
     offset = Number(offset);
     limit = Number(limit);
 
     const rows = await select(offset, limit);
 
-    const result = {
-      _links: {
-        self: {
-          href: `http://localhost:${port}/?offset=${offset}&limit=${limit}`,
-        },
-      },
-      items: rows,
-    };
+    const result = pagingLinks(offset, limit, rows, admin);
 
-    if (offset > 0) {
-      result._links.prev = {
-        href: `http://localhost:${port}/?offset=${offset - limit}&limit=${limit}`,
-      };
-    }
-
-    if (rows.length <= limit) {
-      result._links.next = {
-        href: `http://localhost:${port}/?offset=${Number(offset) + limit}&limit=${limit}`,
-      };
-    }
-    console.log(result._links.self.href)
-    res.render('index', {
-      title: "Undirskriftarlisti",
+    res.locals = {
+      title: 'Undirskriftarlisti',
       querySuccess,
       data: result.items,
       concat: (item) => JSON.stringify(item).substring(1, 11),
       errorId: [],
       errorMessages: [],
-      num_of_signatures: num_of_signatures.rows[0].count,
-      page_num: [offset/limit + 1,Math.ceil(num_of_signatures.rows[0].count/limit)],
-      links: result._links,
-    });
+      numOfSignatures: numOfSignatures.rows[0].count,
+      page_num: [offset / limit + 1, Math.ceil(numOfSignatures.rows[0].count / limit)],
+      links: result.links,
+      admin,
+    };
+    res.render('index');
     querySuccess = [false, ''];
   } catch (e) {
     console.error('Villa að sækja gögn til að birta: ', e);
   }
 }
 
-async function registeration(req, res) {
-  
+async function signatures(req, res) {
+  renderPage(req, res, false);
+}
 
+async function registeration(req, res) {
   const {
     name = '',
     nationalId = '',
     comment = '',
     anonymous = '',
   } = req.body;
-  
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const errorMessages = errors.array().map((i) => i.msg);
@@ -93,7 +79,7 @@ async function registeration(req, res) {
     name: xss(name),
     nationalId: xss(nationalId),
     comment: xss(comment),
-    anonymous: !(anonymous === 'on'), //ekki birta ef "on"
+    anonymous: !(anonymous === 'on'), // ekki birta ef "on"
     date: new Date(),
   };
   try {
@@ -115,9 +101,5 @@ export function catchErrors(fn) {
   return (req, res, next) => fn(req, res, next).catch(next);
 }
 
-router.get('/', catchErrors(signatures_main));
+router.get('/', catchErrors(signatures));
 router.post('/post', formValidation, catchErrors(registeration));
-
-
-
-

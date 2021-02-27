@@ -1,23 +1,26 @@
 <%- include('header') -%>      
             <div class="container">
                 <h1>Innskráning</h1>
-                <form method="post" action="/post">
+                <form method="post" action="/admin/post">
                     <div class ="notendanafn">
                         <label for="username"><b>Notendanafn</b></label>
-                        <% if(errorInfo.includes('name')) { %>
-                            <input type="text" name="username" class="input login-error">
-                      <%  }else{ %>
+                        <% if(!message) { %>
                             <input type="text" name="username" class="input">
+                      <%  }else{ %>
+                            <input type="text" name="username" class="input login-error">
                        <% } %>
                     </div>
                     <div class="password">
                         <label for="password"><b>Lykilorð</b></label>
-                        <% if(errorInfo.includes('nationalId')) { %>
-                            <input type="text"  name="password" class="input login-error">
+                        <% if(!message) { %>
+                            <input type="password"  name="password" class="input">
                       <%  }else{ %>
-                            <input type="text" name="password" class="input">
+                            <input type="password" name="password" class="input login-error">
                        <% } %>
                     </div>
+                    <% if(message) { %>
+                        <h4 class="error-title"><b><%= message %> </b></h4>
+                   <% } %>
                     <div>
                         <button class="login-btn"><b>Innskrá</b></button> 
                     </div>
