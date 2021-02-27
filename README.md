@@ -8,4 +8,4 @@ npm install
 createdb vef2-2021-v2 #setja rétt DATABASE_URL í .env
 npm run setup
 npm run start eða npm run dev
-```bash
+```
