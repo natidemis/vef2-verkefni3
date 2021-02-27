@@ -39,7 +39,7 @@
     "nodemon": "nodemon ./src/app.js",
     "dev": "concurrently npm:nodemon npm:sass:*",
     "init:run-server": "node ./src/app.js",
-    "start": "concurrently npm:sass:build npm:run-server",
+    "start": "concurrently npm:sass:build npm:init:run-server",
     "setup": "node ./src/setup.js",
     "init:setup": "node ./src/setup.js",
     "init": "concurrently npm:init:*"
