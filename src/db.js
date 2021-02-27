@@ -22,12 +22,7 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 
-// async function createTable() {
-//  const cl = await pool.connect();
-//  await cl.query(fs.readFileSync(`${path.resolve(dirname, '..')}/sql/schema.sql`, 'utf-8'));
-//  cl.release();
-// }
-// createTable();
+
 export async function query(q, values = []) {
   const client = await pool.connect();
   try {
