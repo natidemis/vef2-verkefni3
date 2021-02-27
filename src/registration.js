@@ -35,7 +35,6 @@ export async function renderPage(req, res, admin) {
     const rows = await select(offset, limit);
 
     const result = pagingLinks(offset, limit, rows, admin);
-
     res.locals = {
       title: 'Undirskriftarlisti',
       querySuccess,

@@ -73,11 +73,11 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-export function pagingLinks(offset, limit, rows, admin) {
+export function pagingLinks(offset, limit, rows, admin,req) {
   const result = {
     links: {
       self: {
-        href: admin ? `http://localhost:${port}/admin?offset=${offset}&limit=${limit}` : `http://localhost:${port}/?offset=${offset}&limit=${limit}`,
+        href: admin ? `http://${req.get('host')}/admin?offset=${offset}&limit=${limit}` : `http://localhost:${port}/?offset=${offset}&limit=${limit}`,
       },
     },
     items: rows,
@@ -85,13 +85,13 @@ export function pagingLinks(offset, limit, rows, admin) {
 
   if (offset > 0) {
     result.links.prev = {
-      href: admin ? `http://localhost:${port}/admin?offset=${offset}&limit=${limit}` : `http://localhost:${port}/?offset=${offset}&limit=${limit}`,
+      href: admin ? `http://${req.get('host')}/admin?offset=${offset}&limit=${limit}` : `http://localhost:${port}/?offset=${offset}&limit=${limit}`,
     };
   }
 
   if (rows.length <= limit) {
     result.links.next = {
-      href: admin ? `http://localhost:${port}/admin?offset=${Number(offset) + limit}&limit=${limit}` : `http://localhost:${port}/?offset=${Number(offset) + limit}&limit=${limit}`,
+      href: admin ? `http://${req.get('host')}/admin?offset=${Number(offset) + limit}&limit=${limit}` : `http://localhost:${port}/?offset=${Number(offset) + limit}&limit=${limit}`,
     };
   }
 
